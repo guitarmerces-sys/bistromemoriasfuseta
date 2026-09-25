@@ -550,10 +550,8 @@ function initialLang() {
   try {
     const q = new URLSearchParams(location.search).get("lang");
     if (q === "pt" || q === "en") return q;
-    const st = localStorage.getItem("rs-lang");
-    if (st === "pt" || st === "en") return st;
   } catch (e) {}
-  return (navigator.language || "pt").toLowerCase().indexOf("pt") === 0 ? "pt" : "en";
+  return "pt";
 }
 
 const SLIDES = [img("polvo"), img("camarao"), img("parede"), img("vinhos")];
@@ -575,7 +573,6 @@ class Component extends DCLogic {
       const el = document.querySelector(x[0]);
       if (el) el.setAttribute("content", x[1]);
     });
-    try { localStorage.setItem("rs-lang", lang); } catch (e) {}
   }
   componentDidUpdate(pp, ps) { if (ps.lang !== this.state.lang) this.applyLang(this.state.lang); }
 
