@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#f1ede4}
+  a{color:#5e6b47;text-decoration:none}
+  a:hover{color:#3f4a2f}
+  ::selection{background:#e0a21b;color:#14120f}
+</style>
+</helmet>
+<div style="font-family:'Instrument Sans',system-ui,sans-serif;color:#221f1b;background:#f1ede4;line-height:1.55;font-size:16px;overflow-x:hidden;">
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(241,237,228,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #d9d4c9;">
+  <div style="max-width:1160px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <a href="#top" style="display:flex;align-items:center;gap:10px;color:#221f1b;flex:none;">
+      <span style="width:38px;height:38px;border-radius:50%;overflow:hidden;position:relative;background:#fff;flex:none;border:1px solid #d9d4c9;">
+        <img src="assets/logo-memorias.png" alt="" style="position:absolute;width:60px;height:53.3px;left:-14px;top:-7.5px;max-width:none;">
+      </span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;line-height:1;">Bistrô Memórias</span>
+    </a>
+    <nav style="display:flex;gap:22px;flex-wrap:wrap;margin-left:auto;font-size:14px;letter-spacing:0.01em;">
+      <a href="#casa" style="color:#5c564e;">A casa</a>
+      <a href="#pratos" style="color:#5c564e;">Pratos</a>
+      <a href="#avaliacoes" style="color:#5c564e;">Avaliações</a>
+      <a href="#visitar" style="color:#5c564e;">Visitar</a>
+    </nav>
+    <a href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:8px;background:#5e6b47;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;flex:none;" style-hover="background:#4b5638">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>
+      289 048 404
+    </a>
+  </div>
+</header>
+
+<section id="top" style="position:relative;background:#14120f;color:#f6f1e6;min-height:min(88vh,760px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));align-items:stretch;">
+  <div style="position:relative;z-index:2;padding:clamp(32px,5vw,72px);display:flex;flex-direction:column;justify-content:center;gap:26px;">
+    <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.26em;text-transform:uppercase;color:#e0a21b;font-weight:600;">
+      <span style="width:28px;height:1px;background:#e0a21b;display:inline-block;"></span>Fuseta · Ria Formosa
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(40px,5.2vw,68px);line-height:1.03;letter-spacing:-0.02em;margin:0;text-wrap:balance;">Polvo grelhado, cozinha à vista e alma portuguesa.</h1>
+    <p style="margin:0;max-width:44ch;color:rgba(246,241,230,0.78);font-size:clamp(16px,1.3vw,18px);text-wrap:pretty;">Petiscos e cozinha algarvia do chef Marcos Brito, num espaço pequeno cheio de história, a dois passos da ria.</p>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+      <a href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:9px;background:#e0a21b;color:#14120f;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="background:#f0b63a">Reservar por telefone</a>
+      <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(246,241,230,0.4);color:#f6f1e6;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="border-color:#f6f1e6">Ver no mapa</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-top:6px;">
+      <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;color:#f6f1e6;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:600;line-height:1;">4,9</span>
+        <span style="display:flex;flex-direction:column;gap:2px;">
+          <span style="color:#e0a21b;letter-spacing:0.14em;font-size:14px;line-height:1;">★★★★★</span>
+          <span style="font-size:13px;color:rgba(246,241,230,0.7);">161 avaliações no Google</span>
+        </span>
+      </a>
+      <span style="width:1px;height:38px;background:rgba(246,241,230,0.2);"></span>
+      <span style="display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:{{ openColor }};">
+        <span style="width:8px;height:8px;border-radius:50%;background:{{ openColor }};display:inline-block;"></span>{{ openLabel }}
+      </span>
+    </div>
+  </div>
+  <div style="position:relative;min-height:420px;overflow:hidden;">
+    <img src="assets/vinhos.jpg" alt="Balcão de vinhos e garrafeira" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <sc-for list="{{ heroSlides }}" as="slide">
+      <img src="{{ slide.src }}" alt="{{ slide.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1.2s ease;opacity:{{ slide.opacity }};">
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,#14120f 0%,rgba(20,18,15,0.35) 38%,rgba(20,18,15,0) 70%);"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(0deg,rgba(20,18,15,0.7),transparent);">
+      <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(246,241,230,0.85);">{{ heroCaption }}</span>
+      <span style="display:flex;gap:7px;">
+        <sc-for list="{{ heroSlides }}" as="slide" hint-placeholder-count="4">
+          <button type="button" onClick="{{ slide.go }}" aria-label="Ver fotografia" style="width:7px;height:7px;border-radius:50%;border:0;padding:0;cursor:pointer;background:{{ slide.dot }};"></button>
+        </sc-for>
+      </span>
+    </div>
+  </div>
+</section>
+
+<section style="background:#14120f;color:rgba(246,241,230,0.8);border-top:1px solid rgba(246,241,230,0.12);">
+  <div style="max-width:1160px;margin:0 auto;padding:22px 24px;display:flex;gap:clamp(20px,4vw,56px);flex-wrap:wrap;align-items:center;justify-content:center;font-size:13.5px;letter-spacing:0.02em;">
+    <span>4,9 ★ no Google · 161 avaliações</span>
+    <span style="color:rgba(246,241,230,0.3);">·</span>
+    <span>4,9 ★ no Tripadvisor</span>
+    <span style="color:rgba(246,241,230,0.3);">·</span>
+    <span>«Prato do Dia» no JN e na TSF</span>
+    <span style="color:rgba(246,241,230,0.3);">·</span>
+    <span>Aberto de segunda a sábado</span>
+  </div>
+</section>
+
+<section id="casa" style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,120px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,5vw,72px);align-items:center;">
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
+      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>A casa
+    </div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;text-wrap:balance;">Produto fresco, apresentação cuidada e uma sala onde se recebe bem.</h2>
+    <p style="margin:0;color:#5c564e;max-width:52ch;text-wrap:pretty;">Uma cozinha que aposta em produto fresco e apresentação cuidada, num espaço com história, onde até quem chega sem reserva é bem recebido. As avaliações repetem sempre o mesmo: comida feita com cuidado, sala acolhedora e boa relação qualidade-preço.</p>
+    <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(19px,2vw,24px);line-height:1.4;color:#3f4a2f;border-left:2px solid #5e6b47;padding-left:20px;text-wrap:pretty;">«Não tínhamos feito reserva, mas o chef concordou em nos receber, e o que nosso anfitrião havia nos dito era verdade.»</p>
+    <div style="display:flex;gap:clamp(20px,3vw,44px);flex-wrap:wrap;padding-top:8px;border-top:1px solid #d9d4c9;margin-top:8px;">
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;line-height:1.1;">Marcos Brito</strong><span style="font-size:13.5px;color:#5c564e;">Chef e proprietário</span></span>
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;line-height:1.1;">11h – 22h</strong><span style="font-size:13.5px;color:#5c564e;">Segunda a sábado</span></span>
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;line-height:1.1;">Fuseta</strong><span style="font-size:13.5px;color:#5c564e;">R. Gonçalo Velho 29</span></span>
+    </div>
+  </div>
+  <figure style="margin:0;position:relative;">
+    <img src="assets/parede.jpg" alt="Parede de fotografias «Memórias»" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block;">
+    <figcaption style="margin-top:12px;font-size:12.5px;letter-spacing:0.1em;text-transform:uppercase;color:#5c564e;">A parede de memórias, na sala</figcaption>
+  </figure>
+</section>
+
+<section id="pratos" style="background:#e9e5dc;border-top:1px solid #d9d4c9;border-bottom:1px solid #d9d4c9;">
+  <div style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,110px) 24px;display:flex;flex-direction:column;gap:clamp(32px,4vw,56px);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px;align-items:end;">
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
+          <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>Pratos
+        </div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">Os pratos mais falados</h2>
+      </div>
+      <p style="margin:0;color:#5c564e;max-width:46ch;text-wrap:pretty;">O que aparece com mais frequência nas fotos e nos comentários de quem já veio.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:clamp(16px,2vw,28px);">
+      <sc-for list="{{ dishes }}" as="dish" hint-placeholder-count="4">
+        <article style="background:#f1ede4;display:flex;flex-direction:column;border:1px solid #d9d4c9;">
+          <img src="{{ dish.src }}" alt="{{ dish.name }}" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block;">
+          <div style="padding:20px 20px 24px;display:flex;flex-direction:column;gap:9px;flex:1;">
+            <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:23px;line-height:1.15;margin:0;">{{ dish.name }}</h3>
+            <p style="margin:0;font-size:14.5px;color:#5c564e;text-wrap:pretty;">{{ dish.note }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <sc-if value="{{ showMenuList }}" hint-placeholder-val="{{ true }}">
+    <div style="border-top:1px solid #d9d4c9;padding-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(20px,3vw,40px);">
+      <div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;margin:0 0 6px;">Também na carta</h3>
+        <p style="margin:0;font-size:14px;color:#5c564e;">Pratos referidos na imprensa. A carta completa fica editável pela casa.</p>
+      </div>
+      <ul style="margin:0;padding:0;list-style:none;columns:2;column-gap:32px;font-size:15px;color:#3b362f;">
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Gaspacho vegan</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Tacos de jaca</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Muxama de atum da casa</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Croquetes de rabo de boi</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Chouriço assado em barro</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Conquilhas à Bulhão Pato</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Xerém de conquilhas e camarão</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Bacalhau com broa</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Tiborna de polvo à lagareiro</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Pernil de porco assado</li>
+      </ul>
+    </div>
+    </sc-if>
+  </div>
+</section>
+
+<section id="avaliacoes" style="background:#14120f;color:#f6f1e6;">
+  <div style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,110px) 24px;display:flex;flex-direction:column;gap:clamp(32px,4vw,52px);">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a21b;font-weight:600;">
+        <span style="width:26px;height:1px;background:#e0a21b;display:inline-block;"></span>O que dizem no Google
+      </div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;max-width:22ch;">4,9 ★ em 161 avaliações</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:clamp(16px,2vw,24px);align-items:start;">
+      <sc-for list="{{ reviews }}" as="r">
+        <article style="border:1px solid rgba(246,241,230,0.16);padding:26px 24px;display:flex;flex-direction:column;gap:14px;background:rgba(246,241,230,0.03);">
+          <span style="color:#e0a21b;letter-spacing:0.16em;font-size:14px;line-height:1;">★★★★★</span>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:rgba(246,241,230,0.85);text-wrap:pretty;white-space:pre-line;">{{ r.text }}</p>
+          <div style="display:flex;align-items:center;gap:11px;margin-top:auto;padding-top:6px;">
+            <img src="{{ r.avatar }}" alt="" style="width:32px;height:32px;border-radius:50%;object-fit:cover;display:block;">
+            <span style="font-size:14px;font-weight:500;">{{ r.name }}</span>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(246,241,230,0.4);color:#f6f1e6;padding:14px 24px;border-radius:999px;font-weight:600;font-size:14.5px;" style-hover="border-color:#f6f1e6">Ler todas no Google Maps</a>
+  </div>
+</section>
+
+<section id="visitar" style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,110px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:clamp(32px,5vw,64px);align-items:start;">
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
+      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>Visitar
+    </div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">Reservar mesa</h2>
+    <p style="margin:0;color:#5c564e;max-width:46ch;text-wrap:pretty;">A sala é pequena e enche depressa. O mais seguro é ligar e marcar; sem reserva, tentamos sempre arranjar lugar.</p>
+    <span style="display:inline-flex;align-items:center;gap:9px;align-self:start;font-size:13.5px;font-weight:600;padding:8px 16px;border-radius:999px;background:{{ openBg }};color:{{ openInk }};">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ openInk }};display:inline-block;"></span>{{ openLabel }}
+    </span>
+    <div style="display:flex;flex-direction:column;gap:14px;padding-top:6px;">
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5e6b47" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px;"><path d="M12 22s-7-7-7-13a7 7 0 0 1 14 0c0 6-7 13-7 13z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+        <span>R. Gonçalo Velho 29, 8700-034 Fuseta</span>
+      </div>
+      <div style="display:flex;gap:13px;align-items:flex-start;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5e6b47" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px;"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>
+        <a href="tel:+351289048404" style="font-weight:600;">289 048 404</a>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:15px;margin-top:6px;">
+      <tbody>
+        <sc-for list="{{ hours }}" as="row" hint-placeholder-count="5">
+          <tr style="border-bottom:1px solid #d9d4c9;background:{{ row.bg }};">
+            <td style="padding:11px 10px 11px 0;font-weight:{{ row.weight }};">{{ row.day }}</td>
+            <td style="padding:11px 0;text-align:right;color:#5c564e;font-weight:{{ row.weight }};">{{ row.time }}</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+    <a href="tel:+351289048404" style="align-self:start;display:inline-flex;align-items:center;gap:9px;background:#5e6b47;color:#fff;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;margin-top:6px;" style-hover="background:#4b5638">Ligar para reservar</a>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="border:1px solid #d9d4c9;overflow:hidden;background:#e9e5dc;">
+      <iframe src="https://maps.google.com/maps?q=Bistr%C3%B4%20Mem%C3%B3rias%2C%20R.%20Gon%C3%A7alo%20Velho%2029%2C%208700-034%20Fuseta%2C%20Portugal&amp;hl=pt&amp;z=17&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: Bistrô Memórias" style="width:100%;height:clamp(300px,42vh,420px);border:0;display:block;"></iframe>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <img src="assets/vinhos.jpg" alt="Balcão de vinhos e garrafeira" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+      <img src="assets/camarao.jpg" alt="Camarão da costa com limão" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;">
+    </div>
+  </div>
+</section>
+
+<footer style="background:#14120f;color:rgba(246,241,230,0.55);">
+  <div style="max-width:1160px;margin:0 auto;padding:44px 24px;display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center;">
+    <span style="width:52px;height:52px;border-radius:50%;overflow:hidden;position:relative;background:#fff;">
+      <img src="assets/logo-memorias.png" alt="Bistrô Memórias" style="position:absolute;width:82px;height:73px;left:-19px;top:-10.5px;max-width:none;">
+    </span>
+    <span style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#f6f1e6;">Bistrô Memórias · Fuseta</span>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;font-size:14px;">
+      <a href="https://www.instagram.com/bistromemoriasfuseta/" target="_blank" rel="noopener" style="color:rgba(246,241,230,0.8);">Instagram</a>
+      <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="color:rgba(246,241,230,0.8);">Google Maps</a>
+      <a href="tel:+351289048404" style="color:rgba(246,241,230,0.8);">289 048 404</a>
+    </div>
+    <div style="font-size:12.5px;max-width:70ch;line-height:1.6;">© 2026 Bistrô Memórias. Todos os direitos reservados.<br>Fotos do Google Maps: Clarisse Moreno, Marial, Zetlawi 78, Val TH, João Meneses, Bistrô Memórias, Sylwia K., Charles Gaidot, Julie hinson</div>
+  </div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;showMenuList&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;}}">
+const SLIDES = [
+  { src: "assets/vinhos.jpg", alt: "Balcão de vinhos e garrafeira", caption: "Balcão de vinhos e garrafeira" },
+  { src: "assets/parede.jpg", alt: "Parede de fotografias «Memórias»", caption: "A parede de memórias" },
+  { src: "assets/polvo.jpg", alt: "Polvo grelhado sobre tosta", caption: "Polvo grelhado sobre tosta" },
+  { src: "assets/camarao.jpg", alt: "Camarão da costa com limão", caption: "Camarão da costa com limão" }
+];
+
+const PERIODS = [
+  [1, 11, 0, 22, 0], [2, 11, 0, 22, 0], [3, 11, 0, 22, 0],
+  [4, 17, 0, 22, 0], [5, 11, 0, 22, 0],
+  [6, 11, 0, 15, 0], [6, 17, 30, 22, 0]
+];
+
+class Component extends DCLogic {
+  state = { i: 0, now: new Date() };
+
+  componentDidMount() {
+    if (this.props.autoplay ?? true) {
+      this._t = setInterval(() => this.setState(s => ({ i: (s.i + 1) % SLIDES.length })), 5000);
+    }
+    this._c = setInterval(() => this.setState({ now: new Date() }), 60000);
+  }
+  componentWillUnmount() { clearInterval(this._t); clearInterval(this._c); }
+
+  lisbonNow() {
+    const d = this.state.now;
+    return new Date(d.getTime() + (60 + d.getTimezoneOffset()) * 60000);
+  }
+
+  renderVals() {
+    const { i } = this.state;
+    const n = this.lisbonNow();
+    const day = n.getDay();
+    const mins = day * 1440 + n.getHours() * 60 + n.getMinutes();
+    const open = PERIODS.some(p => {
+      const s = p[0] * 1440 + p[1] * 60 + p[2];
+      const e = p[0] * 1440 + p[3] * 60 + p[4];
+      return mins >= s && mins < e;
+    });
+    const rows = [
+      { day: "Domingo", time: "Encerrado", days: [0] },
+      { day: "Segunda – Quarta", time: "11:00 – 22:00", days: [1, 2, 3] },
+      { day: "Quinta", time: "17:00 – 22:00", days: [4] },
+      { day: "Sexta", time: "11:00 – 22:00", days: [5] },
+      { day: "Sábado", time: "11:00 – 15:00 / 17:30 – 22:00", days: [6] }
+    ];
+    return {
+      heroSlides: SLIDES.map((s, k) => ({
+        src: s.src, alt: s.alt,
+        opacity: k === i ? 1 : 0,
+        dot: k === i ? "#e0a21b" : "rgba(246,241,230,0.4)",
+        go: () => this.setState({ i: k })
+      })),
+      heroCaption: SLIDES[i].caption,
+      showMenuList: this.props.showMenuList ?? true,
+      openLabel: open ? "Aberto agora" : "Fechado agora",
+      openColor: open ? "#a8c07a" : "#d8a08a",
+      openBg: open ? "#e4ecd4" : "#f0e2dc",
+      openInk: open ? "#3f4a2f" : "#8a4a33",
+      hours: rows.map(r => ({
+        day: r.day, time: r.time,
+        bg: r.days.indexOf(day) > -1 ? "#e9e5dc" : "transparent",
+        weight: r.days.indexOf(day) > -1 ? 600 : 400
+      })),
+      dishes: [
+        { src: "assets/polvo.jpg", name: "Polvo grelhado", note: "O prato que mais aparece nas fotos e nos comentários." },
+        { src: "assets/tacos.jpg", name: "Tacos de polvo", note: "Petisco da casa, para partilhar à mesa." },
+        { src: "assets/camarao.jpg", name: "Camarão à moda do chef", note: "Frito em azeite e alho, com arroz branco." },
+        { src: "assets/vinhos.jpg", name: "Carta de vinhos portuguesa", note: "Escolhas da região e sugestão da casa a cada prato." }
+      ],
+      reviews: [
+        { name: "Marco Martins", avatar: "assets/av-marco.png", text: "A comida é saborosa e lindamente apresentada — cada prato tinha um sabor fresco e foi feito com esmero. A seleção de vinhos é impressionante, com excelentes opções portuguesas que harmonizaram perfeitamente com a nossa refeição." },
+        { name: "daniela molina", avatar: "assets/av-daniela.png", text: "Já é a terceira vez que venho ao memórias e todas as vezes que volto sinto que é impossível superar, mas acontece sempre!! Comida realmente incrível, um espaço super acolhedor com alma portuguesa." },
+        { name: "corille", avatar: "assets/av-corille.png", text: "Não tínhamos feito reserva, mas o chef concordou em nos receber, e o que nosso anfitrião havia nos dito era verdade. Cozinha excepcional a um preço muito bom." },
+        { name: "Clarisse Moreno", avatar: "assets/av-clarisse.png", text: "Tudo feito com muito amor, cozinheiro excelente.\nStaff acolhedor, espaço de muita história.\nParabéns" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
