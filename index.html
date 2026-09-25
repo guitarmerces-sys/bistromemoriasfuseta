@@ -2,7 +2,7 @@
 <html lang="pt-PT">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Memórias — Restaurante em Fuseta</title>
 <meta name="description" content="Bistrô em Fuseta com polvo grelhado, camarão da costa e petiscos portugueses num espaço acolhedor cheio de história. Reserve mesa: 289 048 404.">
 <meta name="theme-color" content="#f1ede4">
@@ -34,6 +34,35 @@
   }
   new MutationObserver(scan).observe(d, { childList: true, subtree: true });
   document.addEventListener('DOMContentLoaded', scan);
+  /* menu móvel */
+  function setMenu(open) {
+    d.classList.toggle('rs-open', open);
+    var b = document.querySelector('.rs-burger');
+    if (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu'); }
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.rs-burger')) setMenu(!d.classList.contains('rs-open'));
+    else if (d.classList.contains('rs-open') && (!e.target.closest || !e.target.closest('.rs-head') || e.target.closest('.rs-nav a'))) setMenu(false);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  document.addEventListener('click', function (e) {
+    var m = e.target.closest && e.target.closest('.rs-map');
+    if (m) m.classList.add('rs-map-on');
+  });
+  /* barra de ação fixa: aparece depois do hero e some na secção de reserva */
+  var vis = { top: true, visitar: false };
+  var dio = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { vis[e.target.id] = e.isIntersecting; });
+    d.classList.toggle('rs-dock-on', !vis.top && !vis.visitar);
+  });
+  function watchDock() {
+    ['top', 'visitar'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.__dk) { el.__dk = 1; dio.observe(el); }
+    });
+  }
+  new MutationObserver(watchDock).observe(d, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', watchDock);
 })();
 </script>
 <script src="./support.js"></script>
@@ -55,6 +84,23 @@
   .rs-skip:focus{left:16px;z-index:100;background:#5e6b47;color:#fff;padding:10px 18px;border-radius:999px;font-weight:600}
   @media (prefers-reduced-motion:reduce){.rs-slide{transition:none !important}}
   .rs-paper{background:#f6f1e6;border:1px solid #d9d4c9}
+  a,button{-webkit-tap-highlight-color:rgba(94,107,71,0.18);touch-action:manipulation}
+  @media (pointer:coarse){
+    .rs-map iframe{pointer-events:none}
+    .rs-map.rs-map-on iframe{pointer-events:auto}
+    .rs-map:not(.rs-map-on)::after{content:"Toque para explorar o mapa";position:absolute;left:12px;bottom:12px;padding:8px 14px;border-radius:999px;background:#f1ede4;border:1px solid #d9d4c9;color:#3f4a2f;font-size:13px;font-weight:600;pointer-events:none}
+    .rs-dots button:first-child{width:44px !important;height:44px !important;margin-right:0 !important}
+    .rs-dot{width:32px !important;height:32px !important;padding:12.5px !important}
+  }
+  .rs-burger{display:none;place-items:center;width:44px;height:44px;border:0;padding:0;background:transparent;color:#221f1b;cursor:pointer;border-radius:50%}
+  .rs-burger path{transition:transform .3s cubic-bezier(0.16,1,0.3,1);transform-box:fill-box;transform-origin:center}
+  html.rs-open .rs-l1{transform:translateY(3px) rotate(45deg)}
+  html.rs-open .rs-l2{transform:translateY(-3px) rotate(-45deg)}
+  .rs-dock{display:none;position:fixed;left:16px;right:16px;bottom:max(14px,env(safe-area-inset-bottom));z-index:60;height:56px;align-items:center;justify-content:center;gap:10px;border-radius:999px;background:#5e6b47;color:#fff;font-weight:600;font-size:16px;text-decoration:none;
+    transform:translateY(160%);opacity:0;pointer-events:none;transition:transform .5s cubic-bezier(0.16,1,0.3,1),opacity .3s ease}
+  html.rs-dock-on .rs-dock{transform:none;opacity:1;pointer-events:auto}
+  .rs-dock:active{transform:scale(0.98)}
+  @media (prefers-reduced-motion:reduce){.rs-dock,.rs-burger path{transition:none}}
   .rs-foot a{display:inline-block;padding:10px 4px}
   .rs-call,.rs-logo{min-height:44px;box-sizing:border-box}
   .rs-logo{gap:14px !important}
@@ -63,7 +109,7 @@
   /* Movimento: sereno, curto, só transform/opacity/cor. Ver DESIGN.md */
   :root{--rs-ease:cubic-bezier(0.16,1,0.3,1)}
   html{scroll-behavior:smooth;scroll-padding-top:104px}
-  @media (max-width:560px){html{scroll-padding-top:132px}}
+  @media (max-width:560px){html{scroll-padding-top:76px}}
   .rs-btn{transition:background-color .2s ease,color .2s ease,border-color .2s ease,transform .12s ease}
   .rs-btn:active{transform:scale(0.97)}
   .rs-textlink{transition:color .2s ease}
@@ -112,6 +158,7 @@
   }
   @media (pointer:coarse){
     .rs-nav a,.rs-foot a,.rs-textlink{display:inline-flex;align-items:center;min-height:44px}
+    p .rs-textlink{display:inline !important;min-height:0 !important;padding:12px 0}
   }
   @media (min-width:1024px){
     .rs-dishes{grid-template-columns:1.5fr 1fr 1fr 1fr !important;align-items:start !important}
@@ -127,13 +174,48 @@
     .rs-dishes{grid-template-columns:repeat(2,1fr) !important}
   }
   @media (max-width:560px){
-    .rs-head{padding:10px 16px !important;gap:6px 12px !important}
-    .rs-logo{order:1}
-    .rs-mark{width:52px !important;height:52px !important}
-    .rs-mark img{width:82px !important;height:72.9px !important;left:-19.2px !important;top:-10.2px !important}
-    .rs-call{order:2;margin-left:auto}
-    .rs-nav{order:3;width:100%;margin-left:0 !important;gap:0 !important;flex-wrap:nowrap !important;justify-content:space-between}
-    .rs-nav a{padding:10px 6px}
+    .rs-head{padding:10px 16px !important;gap:8px !important;flex-wrap:nowrap !important}
+    .rs-logo{order:1;gap:11px !important;min-width:0}
+    .rs-mark{width:44px !important;height:44px !important}
+    .rs-mark img{width:69.5px !important;height:61.7px !important;left:-16.2px !important;top:-8.7px !important}
+    .rs-name{font-size:22px !important;white-space:nowrap}
+    .rs-call{order:2;margin-left:auto;width:44px;height:44px;padding:0 !important;font-size:0 !important;gap:0 !important;justify-content:center}
+    .rs-call svg{width:20px;height:20px}
+    .rs-burger{order:3;display:grid !important}
+    .rs-nav{display:none !important}
+    html.rs-open .rs-nav{display:flex !important;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0 !important;margin:0 !important;padding:6px 24px 18px;background:#f1ede4;border-bottom:1px solid #d9d4c9;font-size:inherit !important}
+    html.rs-open .rs-nav a{padding:0;min-height:58px;display:flex;align-items:center;border-bottom:1px solid #d9d4c9;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#221f1b !important;background:none}
+    html.rs-open .rs-nav a:last-child{border-bottom:0}
+    /* Hero: fotografia a toda a altura, texto por cima na zona do polegar */
+    #top{display:block !important;position:relative;min-height:min(92vh,760px) !important;min-height:min(92svh,760px) !important}
+    #top .rs-hero-media{position:absolute !important;inset:0;min-height:0 !important}
+    #top .rs-hero-media>div:first-of-type{background:none !important}
+    #top .rs-hero-media>div:last-of-type{top:0 !important;bottom:auto !important;z-index:3;background:linear-gradient(180deg,rgba(20,18,15,0.55),transparent) !important;padding:14px 16px !important}
+    .rs-hero-text{position:relative;z-index:2;min-height:min(92vh,760px);min-height:min(92svh,760px);justify-content:flex-end !important;padding:120px 24px 36px !important;gap:20px !important;background:linear-gradient(0deg,#14120f 6%,rgba(20,18,15,0.93) 46%,rgba(20,18,15,0.55) 74%,rgba(20,18,15,0) 100%);box-sizing:border-box;pointer-events:none}
+    .rs-hero-text a{pointer-events:auto}
+    .rs-hero-h1{font-size:clamp(38px,11.4vw,48px) !important;line-height:1.02 !important}
+    #top .rs-slide{object-position:50% 12%}
+    .rs-hero-text>div:nth-child(4){flex-direction:column;align-items:stretch !important;gap:6px !important}
+    .rs-hero-text>div:nth-child(4) a:first-child{justify-content:center;height:56px;box-sizing:border-box;padding:0 26px !important;font-size:16px !important}
+    .rs-hero-text>div:nth-child(4) a:last-child{justify-content:center;align-self:center}
+    /* Ritmo: secções mais compactas */
+    #casa,#pratos>div,#avaliacoes>div,#visitar{padding-top:56px !important;padding-bottom:56px !important}
+    /* Destaques de «A casa»: chef em cima, horário e local lado a lado */
+    .rs-stats{display:grid !important;grid-template-columns:1fr 1fr;gap:18px 20px !important}
+    .rs-stats>span:first-child{grid-column:1/-1}
+    /* Legenda do álbum sem colidir com a foto pequena */
+    .rs-p2{width:36% !important}
+    .rs-album figcaption{padding-right:44% !important}
+    /* «Também na carta» como etiquetas compactas */
+    .rs-menu-list{display:flex !important;flex-wrap:wrap;gap:8px !important;columns:auto !important;font-size:14px !important;margin-top:4px !important}
+    .rs-menu-list li{padding:8px 14px !important;border:1px solid #d9d4c9 !important;border-radius:999px;background:#f1ede4;line-height:1.3}
+    /* Carrosséis: mais do cartão seguinte à vista, sem arrastar a página */
+    .rs-dishes>*,.rs-reviews>*{flex-basis:76% !important}
+    .rs-dishes,.rs-reviews{overscroll-behavior-x:contain}
+    #top .rs-slide{object-position:50% 40%}
+    /* Barra de ação fixa */
+    .rs-dock{display:flex !important}
+    .rs-foot>div{padding-bottom:112px !important}
     .rs-sep,.rs-vsep{display:none !important}
     .rs-dish-img{aspect-ratio:4/3 !important}
     /* Pratos e avaliações: carrossel horizontal com snap em vez de pilha vertical */
@@ -144,11 +226,10 @@
     .rs-hero-media{min-height:300px !important}
   }
   @media (max-width:480px){
-    .rs-menu-list{font-size:14px !important;column-gap:18px !important}
+    .rs-menu-list{columns:1 !important;font-size:15px !important}
   }
-  @media (max-width:400px){
-    .rs-name{font-size:22px !important}
-    .rs-call{padding:9px 14px !important}
+  @media (max-width:360px){
+    .rs-name{font-size:20px !important}
   }
   @media (pointer:coarse){
     .rs-dots{gap:0 !important}
@@ -167,7 +248,7 @@
       </span>
       <span class="rs-name" style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;line-height:1;">Bistrô Memórias</span>
     </a>
-    <nav class="rs-nav" style="display:flex;gap:22px;flex-wrap:wrap;margin-left:auto;font-size:14px;letter-spacing:0.01em;">
+    <nav class="rs-nav" id="rs-nav" style="display:flex;gap:22px;flex-wrap:wrap;margin-left:auto;font-size:14px;letter-spacing:0.01em;">
       <a href="#casa" style="color:#5c564e;">A casa</a>
       <a href="#pratos" style="color:#5c564e;">Pratos</a>
       <a href="#avaliacoes" style="color:#5c564e;">Avaliações</a>
@@ -177,6 +258,7 @@
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>
       289 048 404
     </a>
+    <button class="rs-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="rs-nav"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="rs-l1" d="M5 9h14"></path><path class="rs-l2" d="M5 15h14"></path></svg></button>
   </div>
 </header>
 
@@ -231,9 +313,9 @@
     <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;text-wrap:balance;">Produto fresco, apresentação cuidada e uma sala onde se recebe bem.</h2>
     <p style="margin:0;color:#5c564e;max-width:52ch;line-height:1.62;text-wrap:pretty;">Uma cozinha que aposta em produto fresco e apresentação cuidada, num espaço com história, onde até quem chega sem reserva é bem recebido. As avaliações repetem sempre o mesmo: comida feita com cuidado, sala acolhedora e boa relação qualidade-preço.</p>
     <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(19px,2vw,24px);line-height:1.4;color:#3f4a2f;border-left:2px solid #5e6b47;padding-left:20px;text-wrap:pretty;">«Não tínhamos feito reserva, mas o chef concordou em nos receber, e o que nosso anfitrião havia nos dito era verdade.»</p>
-    <div style="display:flex;gap:clamp(20px,3vw,44px);flex-wrap:wrap;padding-top:8px;border-top:1px solid #d9d4c9;margin-top:8px;">
+    <div class="rs-stats" style="display:flex;gap:clamp(20px,3vw,44px);flex-wrap:wrap;padding-top:8px;border-top:1px solid #d9d4c9;margin-top:8px;">
       <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Marcos Brito</strong><span style="font-size:14px;color:#5c564e;">Chef e proprietário</span></span>
-      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">11h – 22h</strong><span style="font-size:14px;color:#5c564e;">Segunda a sábado</span></span>
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Seg – Sáb</strong><span style="font-size:14px;color:#5c564e;">Fechado ao domingo</span></span>
       <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Fuseta</strong><span style="font-size:14px;color:#5c564e;">R. Gonçalo Velho 29</span></span>
     </div>
   </div>
@@ -274,7 +356,7 @@
     <div style="border-top:1px solid #d9d4c9;padding-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(20px,3vw,40px);">
       <div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0 0 6px;">Também na carta</h3>
-        <p style="margin:0;font-size:14px;color:#5c564e;">Pratos referidos na imprensa. A carta completa fica editável pela casa.</p>
+        <p style="margin:0;font-size:14px;color:#5c564e;">Pratos referidos na imprensa.</p>
       </div>
       <ul class="rs-menu-list" style="margin:0;padding:0;list-style:none;columns:2;column-gap:32px;font-size:15px;color:#3b362f;">
         <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Gaspacho vegan</li>
@@ -349,7 +431,7 @@
     <p style="margin:0;font-size:14px;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">Ao domingo estamos fechados e ao sábado fazemos pausa entre as 15:00 e as 17:30. Não conseguiu falar connosco? <a class="rs-textlink" href="https://www.instagram.com/bistromemoriasfuseta/" target="_blank" rel="noopener" style="font-weight:600;">Procure-nos no Instagram</a>.</p>
   </div>
   <div style="display:flex;flex-direction:column;gap:14px;align-self:center;width:100%;">
-    <div style="border:1px solid #d9d4c9;overflow:hidden;background:#e9e5dc;">
+    <div class="rs-map" style="position:relative;border:1px solid #d9d4c9;overflow:hidden;background:#e9e5dc;">
       <iframe src="https://maps.google.com/maps?q=Bistr%C3%B4%20Mem%C3%B3rias%2C%20R.%20Gon%C3%A7alo%20Velho%2029%2C%208700-034%20Fuseta%2C%20Portugal&amp;hl=pt&amp;z=17&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: Bistrô Memórias" style="width:100%;height:clamp(300px,42vh,420px);border:0;display:block;"></iframe>
     </div>
     <a class="rs-textlink" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;font-size:15px;font-weight:600;">Abrir no Google Maps</a>
@@ -371,16 +453,17 @@
     <div style="font-size:13px;max-width:70ch;line-height:1.6;">© 2026 Bistrô Memórias. Todos os direitos reservados.<br>Fotos do Google Maps: Clarisse Moreno, Marial, Zetlawi 78, Val TH, João Meneses, Bistrô Memórias, Sylwia K., Charles Gaidot, Julie hinson</div>
   </div>
 </footer>
+<a class="rs-dock" href="tel:+351289048404"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>Reservar por telefone</a>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;showMenuList&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;}}">
 const img = (n) => ({ src: `assets/${n}-800.webp`, srcset: `assets/${n}-800.webp 800w, assets/${n}-1400.webp 1400w` });
 
 const SLIDES = [
-  { ...img("vinhos"), alt: "Balcão de vinhos e garrafeira", caption: "Balcão de vinhos e garrafeira" },
-  { ...img("parede"), alt: "Parede de fotografias «Memórias»", caption: "A parede de memórias" },
   { ...img("polvo"), alt: "Polvo grelhado sobre tosta", caption: "Polvo grelhado sobre tosta" },
-  { ...img("camarao"), alt: "Camarão da costa com limão", caption: "Camarão da costa com limão" }
+  { ...img("camarao"), alt: "Camarão da costa com limão", caption: "Camarão da costa com limão" },
+  { ...img("parede"), alt: "Parede de fotografias «Memórias»", caption: "A parede de memórias" },
+  { ...img("vinhos"), alt: "Balcão de vinhos e garrafeira", caption: "Balcão de vinhos e garrafeira" }
 ];
 
 const PERIODS = [
