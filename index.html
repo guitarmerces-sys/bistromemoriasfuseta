@@ -38,7 +38,7 @@
   function setMenu(open) {
     d.classList.toggle('rs-open', open);
     var b = document.querySelector('.rs-burger');
-    if (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu'); }
+    if (b) { b.setAttribute('aria-expanded', open ? 'true' : 'false'); b.setAttribute('aria-label', open ? b.getAttribute('data-close') : b.getAttribute('data-open')); }
   }
   document.addEventListener('click', function (e) {
     if (e.target.closest && e.target.closest('.rs-burger')) setMenu(!d.classList.contains('rs-open'));
@@ -84,11 +84,17 @@
   .rs-skip:focus{left:16px;z-index:100;background:#5e6b47;color:#fff;padding:10px 18px;border-radius:999px;font-weight:600}
   @media (prefers-reduced-motion:reduce){.rs-slide{transition:none !important}}
   .rs-paper{background:#f6f1e6;border:1px solid #d9d4c9}
+  .rs-lang{display:flex;align-items:center;gap:8px;flex:none}
+  .rs-flag{width:32px;height:32px;padding:2px;border:0;border-radius:50%;background:transparent;cursor:pointer;display:grid;place-items:center;opacity:0.55;transition:opacity .2s ease,transform .12s ease}
+  .rs-flag svg{border-radius:50%;border:1px solid #d9d4c9;box-sizing:border-box;display:block}
+  .rs-flag[aria-pressed=true]{opacity:1;outline:2px solid #5e6b47;outline-offset:2px}
+  .rs-flag:hover{opacity:1}
+  .rs-flag:active{transform:scale(0.94)}
   a,button{-webkit-tap-highlight-color:rgba(94,107,71,0.18);touch-action:manipulation}
   @media (pointer:coarse){
     .rs-map iframe{pointer-events:none}
     .rs-map.rs-map-on iframe{pointer-events:auto}
-    .rs-map:not(.rs-map-on)::after{content:"Toque para explorar o mapa";position:absolute;left:12px;bottom:12px;padding:8px 14px;border-radius:999px;background:#f1ede4;border:1px solid #d9d4c9;color:#3f4a2f;font-size:13px;font-weight:600;pointer-events:none}
+    .rs-map:not(.rs-map-on)::after{content:attr(data-hint);position:absolute;left:12px;bottom:12px;padding:8px 14px;border-radius:999px;background:#f1ede4;border:1px solid #d9d4c9;color:#3f4a2f;font-size:13px;font-weight:600;pointer-events:none}
     .rs-dots button:first-child{width:44px !important;height:44px !important;margin-right:0 !important}
     .rs-dot{width:32px !important;height:32px !important;padding:12.5px !important}
   }
@@ -179,9 +185,12 @@
     .rs-mark{width:44px !important;height:44px !important}
     .rs-mark img{width:69.5px !important;height:61.7px !important;left:-16.2px !important;top:-8.7px !important}
     .rs-name{font-size:22px !important;white-space:nowrap}
-    .rs-call{order:2;margin-left:auto;width:44px;height:44px;padding:0 !important;font-size:0 !important;gap:0 !important;justify-content:center}
+    .rs-lang{order:2;margin-left:auto;gap:4px}
+    .rs-flag{width:36px;height:36px}
+    .rs-flag svg{width:24px;height:24px}
+    .rs-call{order:3;width:44px;height:44px;padding:0 !important;font-size:0 !important;gap:0 !important;justify-content:center}
     .rs-call svg{width:20px;height:20px}
-    .rs-burger{order:3;display:grid !important}
+    .rs-burger{order:4;display:grid !important}
     .rs-nav{display:none !important}
     html.rs-open .rs-nav{display:flex !important;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0 !important;margin:0 !important;padding:6px 24px 18px;background:#f1ede4;border-bottom:1px solid #d9d4c9;font-size:inherit !important}
     html.rs-open .rs-nav a{padding:0;min-height:58px;display:flex;align-items:center;border-bottom:1px solid #d9d4c9;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:#221f1b !important;background:none}
@@ -228,8 +237,9 @@
   @media (max-width:480px){
     .rs-menu-list{columns:1 !important;font-size:15px !important}
   }
-  @media (max-width:360px){
+  @media (max-width:400px){
     .rs-name{font-size:20px !important}
+    .rs-call{display:none !important}
   }
   @media (pointer:coarse){
     .rs-dots{gap:0 !important}
@@ -238,7 +248,7 @@
 </style>
 </helmet>
 <div style="font-family:'Instrument Sans',system-ui,sans-serif;color:#221f1b;background:#f1ede4;line-height:1.55;font-size:16px;overflow-x:hidden;">
-<a class="rs-skip" href="#conteudo">Saltar para o conteúdo</a>
+<a class="rs-skip" href="#conteudo">{{ t.skip }}</a>
 
 <header style="position:sticky;top:0;z-index:50;background:rgba(241,237,228,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #d9d4c9;">
   <div class="rs-head" style="max-width:1160px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
@@ -249,16 +259,20 @@
       <span class="rs-name" style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;line-height:1;">Bistrô Memórias</span>
     </a>
     <nav class="rs-nav" id="rs-nav" style="display:flex;gap:22px;flex-wrap:wrap;margin-left:auto;font-size:14px;letter-spacing:0.01em;">
-      <a href="#casa" style="color:#5c564e;">A casa</a>
-      <a href="#pratos" style="color:#5c564e;">Pratos</a>
-      <a href="#avaliacoes" style="color:#5c564e;">Avaliações</a>
-      <a href="#visitar" style="color:#5c564e;">Visitar</a>
+      <a href="#casa" style="color:#5c564e;">{{ t.navCasa }}</a>
+      <a href="#pratos" style="color:#5c564e;">{{ t.navPratos }}</a>
+      <a href="#avaliacoes" style="color:#5c564e;">{{ t.navAval }}</a>
+      <a href="#visitar" style="color:#5c564e;">{{ t.navVisit }}</a>
     </nav>
     <a class="rs-btn rs-call" href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:8px;background:#5e6b47;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;flex:none;" style-hover="background:#4b5638">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>
       289 048 404
     </a>
-    <button class="rs-burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="rs-nav"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="rs-l1" d="M5 9h14"></path><path class="rs-l2" d="M5 15h14"></path></svg></button>
+    <button class="rs-burger" type="button" aria-label="{{ t.menuOpen }}" data-open="{{ t.menuOpen }}" data-close="{{ t.menuClose }}" aria-expanded="false" aria-controls="rs-nav"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="rs-l1" d="M5 9h14"></path><path class="rs-l2" d="M5 15h14"></path></svg></button>
+    <div class="rs-lang" role="group" aria-label="{{ t.langGroup }}">
+      <button type="button" class="rs-flag" onClick="{{ setPt }}" aria-pressed="{{ ptOn }}" aria-label="Português" title="Português"><svg viewBox="0 0 30 30" width="28" height="28" aria-hidden="true"><defs><clipPath id="rs-c1"><circle cx="15" cy="15" r="15"></circle></clipPath></defs><g clip-path="url(#rs-c1)"><rect width="30" height="30" fill="#ff0000"></rect><rect width="12" height="30" fill="#006600"></rect><circle cx="12" cy="15" r="5" fill="#ffcc00"></circle><rect x="9.6" y="12.2" width="4.8" height="5.4" rx="1" fill="#ffffff" stroke="#ff0000" stroke-width="0.9"></rect></g></svg></button>
+      <button type="button" class="rs-flag" onClick="{{ setEn }}" aria-pressed="{{ enOn }}" aria-label="English" title="English"><svg viewBox="0 0 30 30" width="28" height="28" aria-hidden="true"><defs><clipPath id="rs-c2"><circle cx="15" cy="15" r="15"></circle></clipPath></defs><g clip-path="url(#rs-c2)"><rect width="30" height="30" fill="#012169"></rect><path d="M0 0L30 30M30 0L0 30" stroke="#ffffff" stroke-width="6"></path><path d="M0 0L30 30M30 0L0 30" stroke="#c8102e" stroke-width="2"></path><path d="M15 0V30M0 15H30" stroke="#ffffff" stroke-width="9"></path><path d="M15 0V30M0 15H30" stroke="#c8102e" stroke-width="5"></path></g></svg></button>
+    </div>
   </div>
 </header>
 
@@ -268,18 +282,18 @@
     <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a21b;font-weight:600;">
       <span style="width:28px;height:1px;background:#e0a21b;display:inline-block;"></span>Fuseta · Ria Formosa
     </div>
-    <h1 class="rs-hero-h1" style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(40px,5.2vw,68px);line-height:1.03;letter-spacing:-0.02em;margin:0;text-wrap:balance;">Polvo grelhado, cozinha à vista e alma portuguesa.</h1>
-    <p style="margin:0;max-width:44ch;color:rgba(246,241,230,0.78);font-size:clamp(16px,1.3vw,18px);line-height:1.6;letter-spacing:0.005em;text-wrap:pretty;">Petiscos e cozinha algarvia do chef Marcos Brito, num espaço pequeno cheio de história, a dois passos da ria.</p>
+    <h1 class="rs-hero-h1" style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(40px,5.2vw,68px);line-height:1.03;letter-spacing:-0.02em;margin:0;text-wrap:balance;">{{ t.h1 }}</h1>
+    <p style="margin:0;max-width:44ch;color:rgba(246,241,230,0.78);font-size:clamp(16px,1.3vw,18px);line-height:1.6;letter-spacing:0.005em;text-wrap:pretty;">{{ t.lead }}</p>
     <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
-      <a class="rs-btn" href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:9px;background:#e0a21b;color:#14120f;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="background:#f0b63a">Reservar por telefone</a>
-      <a class="rs-textlink" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="color:#f6f1e6;padding:15px 4px;font-weight:600;font-size:15px;" style-hover="color:#e0a21b">Ver no mapa</a>
+      <a class="rs-btn" href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:9px;background:#e0a21b;color:#14120f;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="background:#f0b63a">{{ t.ctaBook }}</a>
+      <a class="rs-textlink" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="color:#f6f1e6;padding:15px 4px;font-weight:600;font-size:15px;" style-hover="color:#e0a21b">{{ t.seeMap }}</a>
     </div>
     <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-top:6px;">
       <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;color:#f6f1e6;">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1;">4,9</span>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1;">{{ t.rating }}</span>
         <span style="display:flex;flex-direction:column;gap:2px;">
           <span style="color:#e0a21b;letter-spacing:0.14em;font-size:14px;line-height:1;">★★★★★</span>
-          <span style="font-size:14px;color:rgba(246,241,230,0.7);">161 avaliações no Google</span>
+          <span style="font-size:14px;color:rgba(246,241,230,0.7);">{{ t.ratingSub }}</span>
         </span>
       </a>
       <span class="rs-vsep" style="width:1px;height:38px;background:rgba(246,241,230,0.2);"></span>
@@ -308,24 +322,24 @@
 <section id="casa" style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,120px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(32px,5vw,72px);align-items:center;">
   <div style="display:flex;flex-direction:column;gap:20px;">
     <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
-      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>A casa
+      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>{{ t.navCasa }}
     </div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;text-wrap:balance;">Produto fresco, apresentação cuidada e uma sala onde se recebe bem.</h2>
-    <p style="margin:0;color:#5c564e;max-width:52ch;line-height:1.62;text-wrap:pretty;">Uma cozinha que aposta em produto fresco e apresentação cuidada, num espaço com história, onde até quem chega sem reserva é bem recebido. As avaliações repetem sempre o mesmo: comida feita com cuidado, sala acolhedora e boa relação qualidade-preço.</p>
-    <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(19px,2vw,24px);line-height:1.4;color:#3f4a2f;border-left:2px solid #5e6b47;padding-left:20px;text-wrap:pretty;">«Não tínhamos feito reserva, mas o chef concordou em nos receber, e o que nosso anfitrião havia nos dito era verdade.»</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;text-wrap:balance;">{{ t.casaH2 }}</h2>
+    <p style="margin:0;color:#5c564e;max-width:52ch;line-height:1.62;text-wrap:pretty;">{{ t.casaP }}</p>
+    <p style="margin:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:clamp(19px,2vw,24px);line-height:1.4;color:#3f4a2f;border-left:2px solid #5e6b47;padding-left:20px;text-wrap:pretty;">{{ t.quote }}</p>
     <div class="rs-stats" style="display:flex;gap:clamp(20px,3vw,44px);flex-wrap:wrap;padding-top:8px;border-top:1px solid #d9d4c9;margin-top:8px;">
-      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Marcos Brito</strong><span style="font-size:14px;color:#5c564e;">Chef e proprietário</span></span>
-      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Seg – Sáb</strong><span style="font-size:14px;color:#5c564e;">Fechado ao domingo</span></span>
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Marcos Brito</strong><span style="font-size:14px;color:#5c564e;">{{ t.chefRole }}</span></span>
+      <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">{{ t.statDays }}</strong><span style="font-size:14px;color:#5c564e;">{{ t.statClosed }}</span></span>
       <span style="display:flex;flex-direction:column;padding-top:16px;"><strong style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1.1;">Fuseta</strong><span style="font-size:14px;color:#5c564e;">R. Gonçalo Velho 29</span></span>
     </div>
   </div>
   <figure class="rs-album" style="margin:0;position:relative;padding-bottom:8px;">
     <div class="rs-paper rs-p1" style="padding:12px 12px 16px;">
-      <img src="assets/parede-800.webp" srcset="assets/parede-800.webp 800w, assets/parede-1400.webp 1400w" sizes="(min-width:800px) 40vw, 90vw" width="800" height="1066" alt="Parede de fotografias «Memórias»" loading="lazy" decoding="async" style="width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;">
-      <figcaption style="margin-top:14px;padding-right:50%;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:20px;line-height:1.2;color:#5c564e;">A parede de memórias, na sala</figcaption>
+      <img src="assets/parede-800.webp" srcset="assets/parede-800.webp 800w, assets/parede-1400.webp 1400w" sizes="(min-width:800px) 40vw, 90vw" width="800" height="1066" alt="{{ t.altParede }}" loading="lazy" decoding="async" style="width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;">
+      <figcaption style="margin-top:14px;padding-right:50%;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:20px;line-height:1.2;color:#5c564e;">{{ t.figCaption }}</figcaption>
     </div>
     <div class="rs-paper rs-p2" style="position:absolute;right:-12px;bottom:-26px;width:42%;padding:7px 7px 9px;">
-      <img src="assets/vinhos-800.webp" width="800" height="600" alt="Balcão de vinhos e garrafeira" loading="lazy" decoding="async" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;">
+      <img src="assets/vinhos-800.webp" width="800" height="600" alt="{{ t.altVinhos }}" loading="lazy" decoding="async" style="width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;">
     </div>
   </figure>
 </section>
@@ -335,11 +349,11 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px;align-items:end;">
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
-          <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>Pratos
+          <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>{{ t.navPratos }}
         </div>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">Os pratos mais falados</h2>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">{{ t.pratosH2 }}</h2>
       </div>
-      <p style="margin:0;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">O que aparece com mais frequência nas fotos e nos comentários de quem já veio.</p>
+      <p style="margin:0;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">{{ t.pratosP }}</p>
     </div>
     <div class="rs-dishes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:clamp(16px,2vw,28px);">
       <sc-for list="{{ dishes }}" as="dish" hint-placeholder-count="4">
@@ -355,20 +369,20 @@
     <sc-if value="{{ showMenuList }}" hint-placeholder-val="{{ true }}">
     <div style="border-top:1px solid #d9d4c9;padding-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(20px,3vw,40px);">
       <div>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0 0 6px;">Também na carta</h3>
-        <p style="margin:0;font-size:14px;color:#5c564e;">Pratos referidos na imprensa.</p>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0 0 6px;">{{ t.alsoMenu }}</h3>
+        <p style="margin:0;font-size:14px;color:#5c564e;">{{ t.pressNote }}</p>
       </div>
       <ul class="rs-menu-list" style="margin:0;padding:0;list-style:none;columns:2;column-gap:32px;font-size:15px;color:#3b362f;">
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Gaspacho vegan</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Tacos de jaca</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Muxama de atum da casa</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Croquetes de rabo de boi</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Chouriço assado em barro</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Conquilhas à Bulhão Pato</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Xerém de conquilhas e camarão</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Bacalhau com broa</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Tiborna de polvo à lagareiro</li>
-        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">Pernil de porco assado</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m1 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m2 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m3 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m4 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m5 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m6 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m7 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m8 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m9 }}</li>
+        <li style="padding:5px 0;border-bottom:1px solid #d9d4c9;">{{ t.m10 }}</li>
       </ul>
     </div>
     </sc-if>
@@ -379,9 +393,9 @@
   <div style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,110px) 24px;display:flex;flex-direction:column;gap:clamp(32px,4vw,52px);">
     <div style="display:flex;flex-direction:column;gap:14px;">
       <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#e0a21b;font-weight:600;">
-        <span style="width:26px;height:1px;background:#e0a21b;display:inline-block;"></span>O que dizem no Google
+        <span style="width:26px;height:1px;background:#e0a21b;display:inline-block;"></span>{{ t.revLabel }}
       </div>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;max-width:22ch;">4,9 ★ em 161 avaliações</h2>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;max-width:22ch;">{{ t.revTitle }}</h2>
     </div>
     <div class="rs-reviews" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:clamp(16px,2vw,24px);align-items:stretch;">
       <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="4">
@@ -395,23 +409,26 @@
         </article>
       </sc-for>
     </div>
-    <a class="rs-btn" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(246,241,230,0.4);color:#f6f1e6;padding:14px 24px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="border-color:#f6f1e6">Ler todas no Google Maps</a>
+    <sc-if value="{{ isEn }}" hint-placeholder-val="{{ false }}">
+    <p style="margin:-8px 0 0;font-size:14px;color:rgba(246,241,230,0.7);">{{ t.revNote }}</p>
+    </sc-if>
+    <a class="rs-btn" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(246,241,230,0.4);color:#f6f1e6;padding:14px 24px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="border-color:#f6f1e6">{{ t.readAll }}</a>
   </div>
 </section>
 
 <section id="visitar" style="max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,110px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));row-gap:clamp(32px,5vw,64px);column-gap:clamp(32px,calc((100vw - 900px) * 0.5),240px);align-items:start;">
   <div style="display:flex;flex-direction:column;gap:20px;">
     <div style="display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:#5e6b47;font-weight:600;">
-      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>Visitar
+      <span style="width:26px;height:1px;background:#5e6b47;display:inline-block;"></span>{{ t.navVisit }}
     </div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">Reservar mesa</h2>
-    <p style="margin:0;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">A sala é pequena e enche depressa. O mais seguro é ligar e marcar; sem reserva, tentamos sempre arranjar lugar.</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(30px,3.6vw,46px);line-height:1.1;letter-spacing:-0.015em;margin:0;">{{ t.bookH2 }}</h2>
+    <p style="margin:0;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">{{ t.bookP }}</p>
     <span style="display:inline-flex;align-items:center;gap:9px;align-self:start;font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;background:{{ openBg }};color:{{ openInk }};">
       <span style="width:8px;height:8px;border-radius:50%;background:{{ openInk }};display:inline-block;"></span>{{ openLabel }}
     </span>
     <div style="display:flex;align-items:center;gap:14px 24px;flex-wrap:wrap;padding-top:4px;">
       <a href="tel:+351289048404" style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(40px,5vw,56px);line-height:1;letter-spacing:-0.01em;color:#3f4a2f;">289 048 404</a>
-      <a class="rs-btn" href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:9px;background:#5e6b47;color:#fff;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="background:#4b5638">Reservar por telefone</a>
+      <a class="rs-btn" href="tel:+351289048404" style="display:inline-flex;align-items:center;gap:9px;background:#5e6b47;color:#fff;padding:15px 26px;border-radius:999px;font-weight:600;font-size:15px;" style-hover="background:#4b5638">{{ t.ctaBook }}</a>
     </div>
     <div style="display:flex;gap:13px;align-items:flex-start;">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#5e6b47" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px;"><path d="M12 22s-7-7-7-13a7 7 0 0 1 14 0c0 6-7 13-7 13z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
@@ -428,13 +445,13 @@
         </sc-for>
       </tbody>
     </table>
-    <p style="margin:0;font-size:14px;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">Ao domingo estamos fechados e ao sábado fazemos pausa entre as 15:00 e as 17:30. Não conseguiu falar connosco? <a class="rs-textlink" href="https://www.instagram.com/bistromemoriasfuseta/" target="_blank" rel="noopener" style="font-weight:600;">Procure-nos no Instagram</a>.</p>
+    <p style="margin:0;font-size:14px;color:#5c564e;max-width:46ch;line-height:1.62;text-wrap:pretty;">{{ t.hoursNote }} <a class="rs-textlink" href="https://www.instagram.com/bistromemoriasfuseta/" target="_blank" rel="noopener" style="font-weight:600;">{{ t.findIg }}</a>.</p>
   </div>
   <div style="display:flex;flex-direction:column;gap:14px;align-self:center;width:100%;">
-    <div class="rs-map" style="position:relative;border:1px solid #d9d4c9;overflow:hidden;background:#e9e5dc;">
-      <iframe src="https://maps.google.com/maps?q=Bistr%C3%B4%20Mem%C3%B3rias%2C%20R.%20Gon%C3%A7alo%20Velho%2029%2C%208700-034%20Fuseta%2C%20Portugal&amp;hl=pt&amp;z=17&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: Bistrô Memórias" style="width:100%;height:clamp(300px,42vh,420px);border:0;display:block;"></iframe>
+    <div class="rs-map" data-hint="{{ t.mapHint }}" style="position:relative;border:1px solid #d9d4c9;overflow:hidden;background:#e9e5dc;">
+      <iframe src="https://maps.google.com/maps?q=Bistr%C3%B4%20Mem%C3%B3rias%2C%20R.%20Gon%C3%A7alo%20Velho%2029%2C%208700-034%20Fuseta%2C%20Portugal&amp;hl=pt&amp;z=17&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="{{ t.mapTitle }}" style="width:100%;height:clamp(300px,42vh,420px);border:0;display:block;"></iframe>
     </div>
-    <a class="rs-textlink" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;font-size:15px;font-weight:600;">Abrir no Google Maps</a>
+    <a class="rs-textlink" href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="align-self:start;font-size:15px;font-weight:600;">{{ t.openMaps }}</a>
   </div>
 </section>
 </main>
@@ -450,21 +467,96 @@
       <a href="https://maps.google.com/?cid=13085718108134775845" target="_blank" rel="noopener" style="color:rgba(246,241,230,0.8);">Google Maps</a>
       <a href="tel:+351289048404" style="color:rgba(246,241,230,0.8);">289 048 404</a>
     </div>
-    <div style="font-size:13px;max-width:70ch;line-height:1.6;">© 2026 Bistrô Memórias. Todos os direitos reservados.<br>Fotos do Google Maps: Clarisse Moreno, Marial, Zetlawi 78, Val TH, João Meneses, Bistrô Memórias, Sylwia K., Charles Gaidot, Julie hinson</div>
+    <div style="font-size:13px;max-width:70ch;line-height:1.6;">{{ t.rights }}<br>{{ t.photos }}</div>
   </div>
 </footer>
-<a class="rs-dock" href="tel:+351289048404"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>Reservar por telefone</a>
+<a class="rs-dock" href="tel:+351289048404"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 4.5a2 2 0 0 1 2-2h2l2 5-2.5 1.5a12 12 0 0 0 6 6L15.5 12.5l5 2v2a2 2 0 0 1-2 2A15 15 0 0 1 4.5 4.5z"></path></svg>{{ t.ctaBook }}</a>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280},&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;},&quot;showMenuList&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Comportamento&quot;}}">
 const img = (n) => ({ src: `assets/${n}-800.webp`, srcset: `assets/${n}-800.webp 800w, assets/${n}-1400.webp 1400w` });
 
-const SLIDES = [
-  { ...img("polvo"), alt: "Polvo grelhado sobre tosta", caption: "Polvo grelhado sobre tosta" },
-  { ...img("camarao"), alt: "Camarão da costa com limão", caption: "Camarão da costa com limão" },
-  { ...img("parede"), alt: "Parede de fotografias «Memórias»", caption: "A parede de memórias" },
-  { ...img("vinhos"), alt: "Balcão de vinhos e garrafeira", caption: "Balcão de vinhos e garrafeira" }
-];
+
+const I18N = {
+  pt: {
+    skip: "Saltar para o conteúdo", menuOpen: "Abrir menu", menuClose: "Fechar menu", langGroup: "Idioma",
+    navCasa: "A casa", navPratos: "Pratos", navAval: "Avaliações", navVisit: "Visitar",
+    h1: "Polvo grelhado, cozinha à vista e alma portuguesa.",
+    lead: "Petiscos e cozinha algarvia do chef Marcos Brito, num espaço pequeno cheio de história, a dois passos da ria.",
+    ctaBook: "Reservar por telefone", seeMap: "Ver no mapa", rating: "4,9", ratingSub: "161 avaliações no Google",
+    casaH2: "Produto fresco, apresentação cuidada e uma sala onde se recebe bem.",
+    casaP: "Uma cozinha que aposta em produto fresco e apresentação cuidada, num espaço com história, onde até quem chega sem reserva é bem recebido. As avaliações repetem sempre o mesmo: comida feita com cuidado, sala acolhedora e boa relação qualidade-preço.",
+    quote: "«Não tínhamos feito reserva, mas o chef concordou em nos receber, e o que nosso anfitrião havia nos dito era verdade.»",
+    chefRole: "Chef e proprietário", statDays: "Seg – Sáb", statClosed: "Fechado ao domingo",
+    figCaption: "A parede de memórias, na sala",
+    pratosH2: "Os pratos mais falados", pratosP: "O que aparece com mais frequência nas fotos e nos comentários de quem já veio.",
+    alsoMenu: "Também na carta", pressNote: "Pratos referidos na imprensa.",
+    m1: "Gaspacho vegan", m2: "Tacos de jaca", m3: "Muxama de atum da casa", m4: "Croquetes de rabo de boi", m5: "Chouriço assado em barro",
+    m6: "Conquilhas à Bulhão Pato", m7: "Xerém de conquilhas e camarão", m8: "Bacalhau com broa", m9: "Tiborna de polvo à lagareiro", m10: "Pernil de porco assado",
+    revLabel: "O que dizem no Google", revTitle: "4,9 ★ em 161 avaliações", revNote: "", readAll: "Ler todas no Google Maps",
+    bookH2: "Reservar mesa",
+    bookP: "A sala é pequena e enche depressa. O mais seguro é ligar e marcar; sem reserva, tentamos sempre arranjar lugar.",
+    hoursNote: "Ao domingo estamos fechados e ao sábado fazemos pausa entre as 15:00 e as 17:30. Não conseguiu falar connosco?",
+    findIg: "Procure-nos no Instagram", openMaps: "Abrir no Google Maps", mapTitle: "Mapa: Bistrô Memórias", mapHint: "Toque para explorar o mapa",
+    rights: "© 2026 Bistrô Memórias. Todos os direitos reservados.",
+    photos: "Fotos do Google Maps: Clarisse Moreno, Marial, Zetlawi 78, Val TH, João Meneses, Bistrô Memórias, Sylwia K., Charles Gaidot, Julie hinson",
+    altParede: "Parede de fotografias «Memórias»", altVinhos: "Balcão de vinhos e garrafeira",
+    open: "Aberto agora", closed: "Fechado agora",
+    pause: "Pausar a rotação das fotografias", play: "Retomar a rotação das fotografias", photoOf: (k, n) => "Foto " + k + " de " + n,
+    today: (d, t) => "Hoje (" + d + "): " + t,
+    days: ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"],
+    rows: ["Domingo", "Segunda – Quarta", "Quinta", "Sexta", "Sábado"], closedRow: "Encerrado",
+    slides: [["Polvo grelhado sobre tosta", "Polvo grelhado sobre tosta"], ["Camarão da costa com limão", "Camarão da costa com limão"], ["Parede de fotografias «Memórias»", "A parede de memórias"], ["Balcão de vinhos e garrafeira", "Balcão de vinhos e garrafeira"]],
+    dishes: [["Polvo grelhado", "O prato que mais aparece nas fotos e nos comentários."], ["Tacos de polvo", "Petisco da casa, para partilhar à mesa."], ["Camarão à moda do chef", "Frito em azeite e alho, com arroz branco."], ["Carta de vinhos portuguesa", "Escolhas da região e sugestão da casa a cada prato."]],
+    title: "Bistrô Memórias — Restaurante em Fuseta",
+    desc: "Bistrô em Fuseta com polvo grelhado, camarão da costa e petiscos portugueses num espaço acolhedor cheio de história. Reserve mesa: 289 048 404."
+  },
+  en: {
+    skip: "Skip to content", menuOpen: "Open menu", menuClose: "Close menu", langGroup: "Language",
+    navCasa: "The house", navPratos: "Dishes", navAval: "Reviews", navVisit: "Visit",
+    h1: "Grilled octopus, an open kitchen and a Portuguese soul.",
+    lead: "Petiscos and Algarve cooking by chef Marcos Brito, in a small space full of history, a short walk from the ria.",
+    ctaBook: "Book by phone", seeMap: "See on the map", rating: "4.9", ratingSub: "161 reviews on Google",
+    casaH2: "Fresh produce, careful presentation and a room where everyone is made welcome.",
+    casaP: "A kitchen built on fresh produce and careful presentation, in a place with history where even those who arrive without a booking are welcome. The reviews keep saying the same thing: food made with care, a welcoming room and good value for money.",
+    quote: "“We hadn’t booked, but the chef agreed to seat us, and what our host had told us was true.” (translated)",
+    chefRole: "Chef and owner", statDays: "Mon – Sat", statClosed: "Closed on Sundays",
+    figCaption: "The wall of memories, in the dining room",
+    pratosH2: "The most talked-about dishes", pratosP: "What shows up most often in the photos and comments of those who have visited.",
+    alsoMenu: "Also on the menu", pressNote: "Dishes mentioned in the press.",
+    m1: "Vegan gazpacho", m2: "Jackfruit tacos", m3: "House-cured tuna muxama", m4: "Oxtail croquettes", m5: "Clay-baked chouriço",
+    m6: "Clams Bulhão Pato style", m7: "Clam and prawn xerém", m8: "Cod with broa cornbread", m9: "Octopus tiborna, lagareiro style", m10: "Roast pork leg",
+    revLabel: "What people say on Google", revTitle: "4.9 ★ from 161 reviews", revNote: "Reviews are shown in their original language.", readAll: "Read all on Google Maps",
+    bookH2: "Book a table",
+    bookP: "The room is small and fills up fast. The safest way is to call and book; if you haven’t booked, we always try to find you a seat.",
+    hoursNote: "We are closed on Sundays, and on Saturdays we take a break between 15:00 and 17:30. Couldn’t reach us?",
+    findIg: "Find us on Instagram", openMaps: "Open in Google Maps", mapTitle: "Map: Bistrô Memórias", mapHint: "Tap to explore the map",
+    rights: "© 2026 Bistrô Memórias. All rights reserved.",
+    photos: "Photos from Google Maps: Clarisse Moreno, Marial, Zetlawi 78, Val TH, João Meneses, Bistrô Memórias, Sylwia K., Charles Gaidot, Julie hinson",
+    altParede: "Wall of framed photographs with the word “Memórias”", altVinhos: "Wine counter and bottle shelves",
+    open: "Open now", closed: "Closed now",
+    pause: "Pause the photo rotation", play: "Resume the photo rotation", photoOf: (k, n) => "Photo " + k + " of " + n,
+    today: (d, t) => "Today (" + d + "): " + t,
+    days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    rows: ["Sunday", "Monday – Wednesday", "Thursday", "Friday", "Saturday"], closedRow: "Closed",
+    slides: [["Grilled octopus on toast", "Grilled octopus on toast"], ["Coastal prawns with lemon", "Coastal prawns with lemon"], ["Wall of framed photographs with the word “Memórias”", "The wall of memories"], ["Wine counter and bottle shelves", "Wine counter and bottle shelves"]],
+    dishes: [["Grilled octopus", "The dish that shows up most in photos and comments."], ["Octopus tacos", "A house petisco, made for sharing."], ["Chef’s-style prawns", "Fried in olive oil and garlic, with white rice."], ["Portuguese wine list", "Regional picks and a suggestion from the house with every dish."]],
+    title: "Bistrô Memórias — Restaurant in Fuseta",
+    desc: "A bistro in Fuseta serving grilled octopus, coastal prawns and Portuguese petiscos in a welcoming space full of history. Book a table: +351 289 048 404."
+  }
+};
+
+function initialLang() {
+  try {
+    const q = new URLSearchParams(location.search).get("lang");
+    if (q === "pt" || q === "en") return q;
+    const st = localStorage.getItem("rs-lang");
+    if (st === "pt" || st === "en") return st;
+  } catch (e) {}
+  return (navigator.language || "pt").toLowerCase().indexOf("pt") === 0 ? "pt" : "en";
+}
+
+const SLIDES = [img("polvo"), img("camarao"), img("parede"), img("vinhos")];
 
 const PERIODS = [
   [1, 11, 0, 22, 0], [2, 11, 0, 22, 0], [3, 11, 0, 22, 0],
@@ -473,9 +565,22 @@ const PERIODS = [
 ];
 
 class Component extends DCLogic {
-  state = { i: 0, now: new Date(), paused: false, hover: false };
+  state = { i: 0, now: new Date(), paused: false, hover: false, lang: initialLang() };
+
+  applyLang(lang) {
+    const L = I18N[lang];
+    document.documentElement.lang = lang === "en" ? "en" : "pt-PT";
+    document.title = L.title;
+    [["meta[name=description]", L.desc], ["meta[property='og:title']", L.title]].forEach(x => {
+      const el = document.querySelector(x[0]);
+      if (el) el.setAttribute("content", x[1]);
+    });
+    try { localStorage.setItem("rs-lang", lang); } catch (e) {}
+  }
+  componentDidUpdate(pp, ps) { if (ps.lang !== this.state.lang) this.applyLang(this.state.lang); }
 
   componentDidMount() {
+    this.applyLang(this.state.lang);
     const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) this.setState({ paused: true });
     if (this.props.autoplay ?? true) {
@@ -506,7 +611,8 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const { i, paused } = this.state;
+    const { i, paused, lang } = this.state;
+    const t = I18N[lang];
     const n = this.lisbonNow();
     const day = n.getDay();
     const mins = day * 1440 + n.getHours() * 60 + n.getMinutes();
@@ -516,30 +622,36 @@ class Component extends DCLogic {
       return mins >= s && mins < e;
     });
     const rows = [
-      { day: "Domingo", time: "Encerrado", days: [0] },
-      { day: "Segunda – Quarta", time: "11:00 – 22:00", days: [1, 2, 3] },
-      { day: "Quinta", time: "17:00 – 22:00", days: [4] },
-      { day: "Sexta", time: "11:00 – 22:00", days: [5] },
-      { day: "Sábado", time: "11:00 – 15:00 / 17:30 – 22:00", days: [6] }
+      { day: t.rows[0], time: t.closedRow, days: [0] },
+      { day: t.rows[1], time: "11:00 – 22:00", days: [1, 2, 3] },
+      { day: t.rows[2], time: "17:00 – 22:00", days: [4] },
+      { day: t.rows[3], time: "11:00 – 22:00", days: [5] },
+      { day: t.rows[4], time: "11:00 – 15:00 / 17:30 – 22:00", days: [6] }
     ];
     return {
       heroSlides: SLIDES.map((s, k) => ({
-        src: s.src, srcset: s.srcset, alt: s.alt,
+        src: s.src, srcset: s.srcset, alt: t.slides[k][0],
         loading: k === 0 ? "eager" : "lazy",
         prio: k === 0 ? "high" : "auto",
-        label: "Foto " + (k + 1) + " de " + SLIDES.length,
+        label: t.photoOf(k + 1, SLIDES.length),
         current: k === i ? "true" : "false",
         opacity: k === i ? 1 : 0,
         dot: k === i ? "#e0a21b" : "rgba(246,241,230,0.4)",
         go: () => this.setState({ i: k })
       })),
-      heroCaption: SLIDES[i].caption,
+      heroCaption: t.slides[i][1],
+      t: t,
+      isEn: lang === "en",
+      setPt: () => { this.applyLang("pt"); this.setState({ lang: "pt" }); },
+      setEn: () => { this.applyLang("en"); this.setState({ lang: "en" }); },
+      ptOn: lang === "pt" ? "true" : "false",
+      enOn: lang === "en" ? "true" : "false",
       togglePause: () => this.setState(st => ({ paused: !st.paused })),
-      pauseLabel: paused ? "Retomar a rotação das fotografias" : "Pausar a rotação das fotografias",
+      pauseLabel: paused ? t.play : t.pause,
       pauseIcon: paused ? "M8 5v14l11-7z" : "M6 5h4v14H6zM14 5h4v14h-4z",
-      todayLabel: "Hoje (" + ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"][day] + "): " + rows.filter(r => r.days.indexOf(day) > -1)[0].time,
+      todayLabel: t.today(t.days[day], rows.filter(r => r.days.indexOf(day) > -1)[0].time),
       showMenuList: this.props.showMenuList ?? true,
-      openLabel: open ? "Aberto agora" : "Fechado agora",
+      openLabel: open ? t.open : t.closed,
       openColor: open ? "#a8c07a" : "#d8a08a",
       liveClass: open ? "rs-live" : "",
       openBg: open ? "#e4ecd4" : "#f0e2dc",
@@ -549,12 +661,7 @@ class Component extends DCLogic {
         bg: r.days.indexOf(day) > -1 ? "#e9e5dc" : "transparent",
         weight: r.days.indexOf(day) > -1 ? 600 : 400
       })),
-      dishes: [
-        { ...img("polvo"), name: "Polvo grelhado", note: "O prato que mais aparece nas fotos e nos comentários." },
-        { ...img("tacos"), name: "Tacos de polvo", note: "Petisco da casa, para partilhar à mesa." },
-        { ...img("camarao"), name: "Camarão à moda do chef", note: "Frito em azeite e alho, com arroz branco." },
-        { ...img("vinhos"), name: "Carta de vinhos portuguesa", note: "Escolhas da região e sugestão da casa a cada prato." }
-      ],
+      dishes: ["polvo", "tacos", "camarao", "vinhos"].map((n, k) => ({ ...img(n), name: t.dishes[k][0], note: t.dishes[k][1] })),
       reviews: [
         { name: "Marco Martins", avatar: "assets/av-marco.png", text: "A comida é saborosa e lindamente apresentada — cada prato tinha um sabor fresco e foi feito com esmero. A seleção de vinhos é impressionante, com excelentes opções portuguesas que harmonizaram perfeitamente com a nossa refeição." },
         { name: "daniela molina", avatar: "assets/av-daniela.png", text: "Já é a terceira vez que venho ao memórias e todas as vezes que volto sinto que é impossível superar, mas acontece sempre!! Comida realmente incrível, um espaço super acolhedor com alma portuguesa." },
